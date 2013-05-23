@@ -27,8 +27,8 @@ chList.each do |item|
 	begin
 		spider = HLSpider.new(item)
 		puts "-------------------------------------------------------------------------"
-    puts "Channel id '#{getChannelName(item)}'"
-    spider.playlists.each do |playlist|
+    		puts "Channel id '#{getChannelName(item)}'"
+    		spider.playlists.each do |playlist|
 			puts "Bitrate #{playlist.source.scan(/(\d{3,}\.)/).to_s} is alive? #{playlist.valid?.to_s.capitalize!}!"
 		end
 		puts "Processing: #{Time.now - beginning1}"
