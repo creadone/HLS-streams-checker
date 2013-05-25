@@ -1,13 +1,14 @@
 # encoding: utf-8
 
-beginning = Time.now
-
 require "uri/http"
 require "HLSpider"
+
+beginning = Time.now
 
 CLP = "channels.cfg"
 
 chList = []
+badChList = []
 
 linklist = File.open(CLP,'r') do |file|
   file.each do |line|
@@ -26,16 +27,27 @@ chList.each do |item|
 	beginning1 = Time.now
 	begin
 		spider = HLSpider.new(item)
-		puts "-------------------------------------------------------------------------"
-    		puts "Channel id '#{getChannelName(item)}'"
-    		spider.playlists.each do |playlist|
+		puts "\n-------------------------------------------------------------------------"
+    puts "Channel id '#{getChannelName(item)}'"
+    spider.playlists.each do |playlist|
 			puts "Bitrate #{playlist.source.scan(/(\d{3,}\.)/).to_s} is alive? #{playlist.valid?.to_s.capitalize!}!"
-	 end
+    end
 		puts "Processing: #{Time.now - beginning1}"
 	rescue => err
-		#puts "Status: down."
-    puts err.message
+    badChList.unshift(err.message.to_s)
 	end
 end
-puts "Channels: #{chList.count}"
+
+puts "Channels: #{chList.count}\n\n"
+
+if badChList.empty?
+  puts "All channels is working."
+else
+  puts "Wrong streams: #{badChList.count}"
+  badChList.map do |ch|
+    puts "\t#{ch.split("\n")[0]}"
+  end
+end
+
 puts "Total time: #{Time.now - beginning}"
+
