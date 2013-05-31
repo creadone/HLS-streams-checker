@@ -1,6 +1,5 @@
 # encoding: utf-8
 
-require "uri/http"
 require "HLSpider"
 
 beginning = Time.now
@@ -49,5 +48,5 @@ else
   end
 end
 
-puts "Total time: #{Time.now - beginning}"
+puts "\nTotal time: #{Time.now - beginning}"
 
